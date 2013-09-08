@@ -68,10 +68,28 @@ public class Paper {
 
 	}
 
+	public void advancePage() {
+		currentPage++;
+		if (currentPage > text.length-1)
+			currentPage = text.length-1;
+	}
 
+	public int numPages() {
+		return text.length;
+	}
+
+	private boolean turningPage = false;
+
+	public void turnPage() {
+		turningPage = true;
+	}
+
+	private float pageTurnStep = 0;
+	private boolean haveAdvancedPage = false;
 
 	public void update(GameContainer container, int delta) {
 		Input input = container.getInput();
+		// drop in words around cursor
 		for (Word[] line : text[currentPage]) {
 			for (Word word : line) {
 				float mx = (float)input.getMouseX();
@@ -84,6 +102,45 @@ public class Paper {
 				word.update(container, delta);
 			}
 		}
+
+		// turn page
+		if (turningPage) {
+			pageTurnStep += delta; //!!!
+			if (pageTurnStep < 1000.0f) {
+				this.setShift(-(pageTurnStep/1000.0f)*container.getWidth(), 0.0f);
+			}
+			else if (!haveAdvancedPage) {
+				advancePage();
+				haveAdvancedPage = true;
+				setShift((float)container.getWidth(), 0.0f);
+			}
+			if (pageTurnStep >= 1000.0f && pageTurnStep < 2000.0f) {
+				float p = pageTurnStep - 1000.0f;
+				this.setShift(((1000.0f-p)/1000.0f)*container.getWidth(), 0.0f);
+			}
+			else if (pageTurnStep >= 2000.0f) {
+				this.setShift(0.0f, 0.0f);
+				pageTurnStep = 0;
+				turningPage = false;
+			}
+
+		}
+	}
+
+	public void shift(float x, float y) {
+		for (Word[] line : text[currentPage]) {
+			for (Word word : line) {
+				word.translate(x, y);
+			}
+		}
+	}
+
+	public void setShift(float x, float y) {
+		for (Word[] line : text[currentPage]) {
+			for (Word word : line) {
+				word.setTranslation(x, y);
+			}
+		}		
 	}
 
 	public void render(GameContainer container, Graphics g) {

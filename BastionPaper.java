@@ -36,7 +36,11 @@ public class BastionPaper extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
+		Input input = container.getInput();
+
 		paper.update(container, delta);
+		if (input.isKeyPressed(Input.KEY_RIGHT))
+			paper.turnPage();
 	}
 
 	public void render(GameContainer container, Graphics g) throws SlickException {

@@ -6,6 +6,7 @@ public class Word {
 	private static final int MAX_STEP = 300;
 	private static final int MAX_FONT = 100;
 	private static final float SMALLEST_SCALE = 0.3f;
+	public static final float APPROX_HEIGHT = 16.0f;
 	private String text;
 	private Image bigImage;
 	private Image image;
@@ -14,6 +15,8 @@ public class Word {
 	private float x;
 	private float y;
 	private boolean landed = false;
+	private float shiftX = 0.0f;
+	private float shiftY = 0.0f;
 
 	public Word(String text, String filename) {
 		this.text = text;
@@ -50,9 +53,29 @@ public class Word {
 		return this.y + this.getHeight()/2;
 	}
 
+	public void translate(float x, float y) {
+		this.x += x;
+		this.y += y;
+		shiftX += x;
+		shiftY += y;
+	}
+
+	public void setTranslation(float x, float y) {
+		this.x -= shiftX;
+		this.y -= shiftY;
+		shiftX = x;
+		shiftY = y;
+		this.x += shiftX;
+		this.y += shiftY;
+	}
+
 	public void shift(float x, float y) {
 		this.x += x;
 		this.y += y;
+	}
+
+	public boolean contains(float x, float y) {
+		return x >= getCenterX()-getWidth() && x <= getCenterX()+getWidth() && y >= getCenterY()-APPROX_HEIGHT/2.0f && y <= getCenterY()+APPROX_HEIGHT/2.0f;
 	}
 
 	public void activate(boolean animate) {
@@ -68,8 +91,6 @@ public class Word {
 		if (step > MAX_STEP)
 			step = MAX_STEP;
 	}
-
-	private int emitterTimer = 0;
 
 	public void update(GameContainer container, int delta) {
 		if (!active)
