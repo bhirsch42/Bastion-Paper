@@ -155,7 +155,7 @@ public class Paper {
 	private boolean turningPage = false;
 
 	public void turnPage() {
-		if (currentPage == text.length-1)
+		if (currentPage == text.length-1 || turningPageBack)
 			return;
 		turningPage = true;
 	}
@@ -163,7 +163,7 @@ public class Paper {
 	private boolean turningPageBack = false;
 
 	public void turnPageBack() {
-		if (currentPage == 0)
+		if (currentPage == 0 || turningPage)
 			return;
 		turningPageBack = true;
 	}

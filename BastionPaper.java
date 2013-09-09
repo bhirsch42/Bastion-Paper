@@ -44,7 +44,7 @@ public class BastionPaper extends BasicGame {
 		if (input.isKeyPressed(Input.KEY_RIGHT)) {
 			paper.turnPage();
 		}
-		if (input.isKeyPressed(Input.KEY_LEFT)) {
+		else if (input.isKeyPressed(Input.KEY_LEFT)) {
 			paper.turnPageBack();
 		}
 	}
