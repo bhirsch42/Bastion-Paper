@@ -21,7 +21,7 @@ public class BastionPaper extends BasicGame {
 			int width = (int)screenSize.getWidth();
 			int height = (int)screenSize.getHeight();
 			app.setDisplayMode(width, height, true);
-			app.setDisplayMode(1366, 768, false);
+			// app.setDisplayMode(1366, 768, false);
 			app.setTargetFrameRate(120);
 			app.start();
 		}
