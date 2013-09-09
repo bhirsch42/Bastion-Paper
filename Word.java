@@ -7,6 +7,18 @@ public class Word {
 	private static final int MAX_FONT = 100;
 	private static final float SMALLEST_SCALE = 0.3f;
 	public static final float APPROX_HEIGHT = 16.0f;
+
+	public static Sound hit0;
+	static {
+		Sound temp = null;
+		try {
+			temp = new Sound("hit0.wav");
+		}
+		catch (SlickException e) {
+			e.printStackTrace();
+		}
+		hit0 = temp;
+	}
 	private String text;
 	private Image bigImage;
 	private Image image;
@@ -17,6 +29,7 @@ public class Word {
 	private boolean landed = false;
 	private float shiftX = 0.0f;
 	private float shiftY = 0.0f;
+	private boolean playedSound = false;
 
 	public Word(String text, String filename) {
 		this.text = text;
@@ -35,6 +48,10 @@ public class Word {
 	public void setPos(float x, float y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public String getText() {
+		return text;
 	}
 
 	public int getWidth() {
@@ -82,8 +99,21 @@ public class Word {
 		if (active)
 			return;
 		this.active = true;
-		if (!animate)
+		if (!animate) {
 			step = MAX_STEP;
+			playedSound = true;
+		}
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	private void playSound() {
+		if (playedSound)
+			return;
+		playedSound = true;
+		hit0.play();
 	}
 
 	private void incrementStep(int delta) {
@@ -103,13 +133,14 @@ public class Word {
 			return;
 		if (step == MAX_STEP) {
 			g.drawImage(image,x,y);
+			playSound();
 		}
 		else {
-			float scale = SMALLEST_SCALE + (1.0f - SMALLEST_SCALE)*((float)(MAX_STEP-step)/(float)MAX_STEP);
+			float scale = SMALLEST_SCALE + (1.0f - SMALLEST_SCALE)*((float)((MAX_STEP*MAX_STEP)-(step*step))/(float)(MAX_STEP*MAX_STEP));
 			Image img = bigImage.getScaledCopy(scale);
 			float sx = getCenterX() - img.getWidth()/2.0f;
 			float sy = getCenterY() - img.getHeight()/2.0f;
-			g.drawImage(img,sx,sy,new Color(255,255,255,255*step/MAX_STEP));
+			g.drawImage(img,sx,sy,new Color(255,255,255,255*(step*step)/(MAX_STEP*MAX_STEP)));
 		}
 	}
 

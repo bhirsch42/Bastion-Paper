@@ -1,0 +1,1 @@
+Class-Path: .;stdlib.jar;slick;slick/lib;slick/lib/*;WordConverter

@@ -2,10 +2,10 @@ Windows
 	Run
 		java -cp .;stdlib.jar;slick;slick/lib;slick/lib/*;WordConverter -Djava.library.path=slick BastionPaper
 	Compile
-		javac -cp .;stdlib.jar;slick;slick/lib;slick/lib/*;WordConverter BastionPaper.java
+		javac -cp .;stdlib.jar;slick;slick/lib;slick/lib/*;WordConverter *.java
 
 Mac
 	Run
 		java -cp .:stdlib.jar:slick:slick/lib:slick/lib/*:WordConverter -Djava.library.path=slick BastionPaper
 	Compile
-		javac -cp .:stdlib.jar:slick:slick/lib:slick/lib/*:WordConverter BastionPaper.java
+		javac -cp .:stdlib.jar:slick:slick/lib:slick/lib/*:WordConverter *.java
